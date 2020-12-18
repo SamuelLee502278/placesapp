@@ -4,6 +4,7 @@ import data
 app = Flask(__name__)
 
 array = ["california", "texas"]
+tripitems = [{"name": "Walmart", "address": "1619 Heddon Falls Dr."}]
 
 @app.route('/')
 def home():
@@ -20,13 +21,21 @@ def tripdetails():
     if request.method == 'POST':
         result_string = request.form.get("place")
         result_array = data.findplace(result_string)
-        return render_template("trip_details.html", result = result_array)
-    return render_template("trip_details.html", result = "")
+        return render_template("trip_details.html", search_result = result_array, tripitems = tripitems)
+    return render_template("trip_details.html", search_result = None, tripitems = tripitems)
 
 @app.route('/add', methods = ['POST', 'GET'])
-def add():
+def addtrip():
     array.append(request.form.get("tripname"))
     return redirect(url_for('home'))
+
+@app.route('/addtripitem', methods = ['POST', 'GET'])
+def addtripitem():
+    # search = request.args.get('text')
+    # print(search)
+    print("hello")
+    return redirect(url_for('home'))
+
 
 # @app.route('/delete', methods = ['POST', 'GET'])
 # def delete():

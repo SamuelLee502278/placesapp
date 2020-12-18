@@ -6,35 +6,75 @@
 
 {% block content %}
 
+{% if search_result == None %}
+<div class="sidenav" id = "sidenav" style ="width: 0px">
+{% else %}
 <div class="sidenav" id = "sidenav">
-    {% for candidates in result %}
-    <h6>{{candidates.name}}</h6>
-    <h6>{{candidates.address}}</h6>
-    <h6>{{candidates.lat}}</h6>
-    <h6>{{candidates.lng}}</h6>
-    {% endfor %}
+{% for candidates in search_result %}
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{candidates.name}}</h5>
+      <h6 class="card-title">{{candidates.address}}</h6>
+      <button onclick = "addTripItem()" type ="button" class="btn btn-success">Add to List</button>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 </div>
 
-
+<div id = "listbody">
 <form action='/tripdetails' method = "POST">
 <input type="text" class="form-control" id = "myInput" placeholder="Search for a Place" name="place" style ="border-top-left-radius: 100px; border-bottom-left-radius: 100px"/>
 </form>
- 
+</div>
 
-<button onclick = "hideSide()" type="button" class="btn btn-info">
-    <span class="glyphicon glyphicon-search"></span> Search
+<h1 id="test"></h1>
+
+<div id = "tripitem">
+{% for items in tripitems %}
+<div class="card" style= "width: 18rem">
+    <div class="card-body">
+        <h5 class="card-title">{{items.name}}</h5>
+        <h6 class="card-title">{{items.address}}</h6>
+        <a href="#" class="btn btn-warning">Delete</a>
+    </div>
+</div>
+{% endfor %}
+</div>
+ 
+{% if search_result == None %}
+<button onclick = "hideSide()" type="button" class="btn btn-info" id = "hidebutton">
+{% else %}
+<button onclick = "hideSide()" type="button" class="btn btn-info" id = "hidebutton" style = "right: 400px">
+{% endif %}
+    <span class="glyphicon-search"></span> Result
 </button>
 
 <script>
 
 function hideSide(){
     var hide = document.getElementById("sidenav")
-    if(hide.style.display != "none"){
-        hide.style.display = "none"
+    if(hide.style.width != "0px"){
+        hide.style.width = "0px";
+        document.getElementById('listbody').style.opacity = 1;
+        document.getElementById('hidebutton').style.right = "0px";
     }
     else{
-        hide.style.display = ""
+        hide.style.width = "400px";
+        document.getElementById('listbody').style.opacity = 0.2;
+        document.getElementById('hidebutton').style.right = "400px";
     }
+}
+
+function addTripItem(){
+
+    $.ajax({
+        type: "POST",
+        url: "{{url_for('addtripitem')}}",
+        data: {"text": "hello"},
+        // dataType: "json"
+});
+
 }
 
 var searchfrom = document.getElementById("searchform")
