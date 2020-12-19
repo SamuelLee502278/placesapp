@@ -15,7 +15,7 @@
     <div class="card-body">
       <h5 class="card-title">{{candidates.name}}</h5>
       <h6 class="card-title">{{candidates.address}}</h6>
-      <button onclick = "addTripItem()" type ="button" class="btn btn-success">Add to List</button>
+      <button onclick = "addTripItem({{candidates|safe}})" type ="button" class="btn btn-success">Add to List</button>
     </div>
 </div>
 {% endfor %}
@@ -30,18 +30,21 @@
 
 <h1 id="test"></h1>
 
-<div id = "tripitem">
-{% for items in tripitems %}
-<div class="card" style= "width: 18rem">
-    <div class="card-body">
-        <h5 class="card-title">{{items.name}}</h5>
-        <h6 class="card-title">{{items.address}}</h6>
-        <a href="#" class="btn btn-warning">Delete</a>
+{% for candidates in tripitems %}
+    <div class = "initialdisplay">
+        <div class = "card">
+            <div class="card-body">
+                <h5 class="card-title">{{candidates.name}}</h5>
+                <h6 class="card-title">{{candidates.address}}</h6>
+                <a href="#" class="btn btn-warning">Delete</a>
+            </div>
+        </div>
     </div>
-</div>
 {% endfor %}
+
+<div class = "additemdisplay">
 </div>
- 
+
 {% if search_result == None %}
 <button onclick = "hideSide()" type="button" class="btn btn-info" id = "hidebutton">
 {% else %}
@@ -66,13 +69,32 @@ function hideSide(){
     }
 }
 
-function addTripItem(){
+function addTripItem(item){
+
+    var item = {"name": item.name, "address": item.address, "lat": item.lat, "lng": item.lng}
 
     $.ajax({
         type: "POST",
         url: "{{url_for('addtripitem')}}",
-        data: {"text": "hello"},
-        // dataType: "json"
+        data: {"output" : JSON.stringify(item)},
+
+    success: function(response){
+   
+    $('.additemdisplay').empty();
+    $('.initialdisplay').empty();
+
+    for(i = 0; i < response['items'].length; i++){
+
+    var card = $('<div>').addClass('card').appendTo(".additemdisplay");
+
+    // var image = $('<img>').addClass('card-img-top').attr("src", "/static/graphics.jpg").appendTo(card)
+    var body = $('<div>').addClass('card-body').appendTo(card)
+    var title = $('<h5>').addClass('card-title').text(response['items'][i]['name']).appendTo(body)
+    var price = $('<h6>').text(response['items'][i]['address']).appendTo(body)
+    var deletecard = $('<button>').addClass('btn btn-warning').text("Delete").appendTo(body)
+
+    }
+}        
 });
 
 }

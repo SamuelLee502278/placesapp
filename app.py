@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import json
 import data
 
 app = Flask(__name__)
@@ -22,6 +23,7 @@ def tripdetails():
         result_string = request.form.get("place")
         result_array = data.findplace(result_string)
         return render_template("trip_details.html", search_result = result_array, tripitems = tripitems)
+    print(tripitems)
     return render_template("trip_details.html", search_result = None, tripitems = tripitems)
 
 @app.route('/add', methods = ['POST', 'GET'])
@@ -31,10 +33,12 @@ def addtrip():
 
 @app.route('/addtripitem', methods = ['POST', 'GET'])
 def addtripitem():
-    # search = request.args.get('text')
-    # print(search)
-    print("hello")
-    return redirect(url_for('home'))
+    new_item = json.loads(request.form['output'])
+    tripitems.append(new_item)
+    itemlist = {
+        "items" : tripitems
+    }
+    return jsonify(itemlist)
 
 
 # @app.route('/delete', methods = ['POST', 'GET'])
