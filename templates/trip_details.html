@@ -36,7 +36,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{candidates.name}}</h5>
                 <h6 class="card-title">{{candidates.address}}</h6>
-                <a href="#" class="btn btn-warning">Delete</a>
+                <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
             </div>
         </div>
     </div>
@@ -79,24 +79,29 @@ function addTripItem(item){
         data: {"output" : JSON.stringify(item)},
 
     success: function(response){
-   
-    $('.additemdisplay').empty();
-    $('.initialdisplay').empty();
 
-    for(i = 0; i < response['items'].length; i++){
-
-    var card = $('<div>').addClass('card').appendTo(".additemdisplay");
-
-    // var image = $('<img>').addClass('card-img-top').attr("src", "/static/graphics.jpg").appendTo(card)
-    var body = $('<div>').addClass('card-body').appendTo(card)
-    var title = $('<h5>').addClass('card-title').text(response['items'][i]['name']).appendTo(body)
-    var price = $('<h6>').text(response['items'][i]['address']).appendTo(body)
-    var deletecard = $('<button>').addClass('btn btn-warning').text("Delete").appendTo(body)
-
-    }
+    location.href = "/tripdetails"
 }        
 });
 
+}
+
+function deleteTripItem(item){
+
+    var item = {"address": item.address}
+
+    $.ajax({
+        type: "POST",
+        url: "{{url_for('deletetripitem')}}",
+        data: {"output" : JSON.stringify(item)},
+
+    success: function(response){
+
+    location.href = "/tripdetails"
+}        
+});
+
+    
 }
 
 var searchfrom = document.getElementById("searchform")
