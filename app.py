@@ -1,39 +1,41 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 import data
+import database
 
 app = Flask(__name__)
 
-array = ["california", "texas"]
-tripitems = [{"name": "Walmart", "address": "1619 Heddon Falls Dr."}]
+tripitems = [{"name": "Walmart", "address": "2100 Nueces Road 19493"}]
 dataclass = data.DataClass()
 
 @app.route('/')
 def home():
-    #load current database with trips
-    return render_template("home.html", trips = array)
+    return render_template("home.html", trips = database.getalltrips())
 
-@app.route('/trip')
-def trip():
-    #when user clicks on trip, routes to the trip instance page
-    return render_template("trip.html")
-
-@app.route('/add', methods = ['POST', 'GET'])
+@app.route('/addtrip', methods = ['POST', 'GET'])
 def addtrip():
-    array.append(request.form.get("tripname"))
+    name = request.form.get("tripname")
+    creator = 'Bob'
+    numitems = '0'
+    database.inserttrip(name, creator, numitems)
     return redirect(url_for('home'))
 
-@app.route('/tripdetails',methods = ['POST','GET'])
-def tripdetails():
+@app.route('/<string:name>/deletetrip', methods = ['POST', 'GET'])
+def deletetrip(name):
+    database.deletetrip(name)
+    return redirect(url_for('home'))
+
+@app.route('/<string:name>/tripdetails',methods = ['POST','GET'])
+def tripdetails(name):
     if request.method == 'POST':
         result_string = request.form.get("place")
         result_array = dataclass.findplace(result_string)
         dataclass.storesearch(result_array)
-        return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = tripitems)
+        return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = tripitems, trip = name.upper())
     if dataclass.getsearch() != None:
-        return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = tripitems)
+        return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = tripitems, trip = name.upper())
     else:
-        return render_template("trip_details.html", search_result = None, tripitems = tripitems)
+        return render_template("trip_details.html", search_result = None, tripitems = tripitems, trip = name.upper())
 
 @app.route('/addtripitem', methods = ['POST', 'GET'])
 def addtripitem():

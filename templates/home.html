@@ -36,7 +36,7 @@
 {% block content %}
 
 <div>
-    <form action="/add" method='post'>
+    <form action="/addtrip" method='post'>
         <input type="text" name="tripname">
         <button>Submit</button>
     </form>
@@ -48,11 +48,11 @@
     <div class="row">
         <div class="card" style="width: 18rem;">
             <div class="card-body">
-            <h5 class="card-title">{{trip}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+            <h5 class="card-title">{{trip[0]}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Created by Samuel Lee</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Number of Places: 10</h6>
+            <a href="/{{trip[0]}}/tripdetails" class="card-link">Enter</a>
+            <a href="/{{trip[0]}}/deletetrip" class ="card-link">Delete</a>
             </div>
         </div>
     </div>

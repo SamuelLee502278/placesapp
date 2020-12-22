@@ -6,6 +6,8 @@
 
 {% block content %}
 
+<h1>{{trip}}</h1>
+
 {% if search_result == None %}
 <div class="sidenav" id = "sidenav" style ="width: 0px">
 {% else %}
@@ -23,7 +25,7 @@
 </div>
 
 <div id = "listbody">
-<form action='/tripdetails' method = "POST">
+<form action='/{{trip}}/tripdetails' method = "POST">
 <input type="text" class="form-control" id = "myInput" placeholder="Search for a Place" name="place" style ="border-top-left-radius: 100px; border-bottom-left-radius: 100px"/>
 </form>
 </div>
@@ -80,7 +82,7 @@ function addTripItem(item){
 
     success: function(response){
 
-    location.href = "/tripdetails"
+    location.href = "/{{trip}}/tripdetails"
 }        
 });
 
@@ -97,7 +99,7 @@ function deleteTripItem(item){
 
     success: function(response){
 
-    location.href = "/tripdetails"
+    location.href = "/{{trip}}/tripdetails"
 }        
 });
 
