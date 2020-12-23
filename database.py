@@ -12,13 +12,17 @@ conn = pymysql.connect(
 cursor = conn.cursor()
 
 #Created Trips Table
-# createtable = "CREATE TABLE Trips(name varchar(200) PRIMARY KEY, creator varchar(200), numitems varchar(10))"
+# createtable = "CREATE TABLE Trips(name varchar(200) PRIMARY KEY, creator varchar(200), numitems INT)"
+# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200) PRIMARY KEY, lattitude varchar(200), longitude varchar(200))"
 # cursor.execute(createtable)
 
-def inserttrip(nametrip, creatorname, items):
-    insertquery = "INSERT INTO Trips (name, creator, numitems) VALUES (%s , %s, %s)"
-    cursor.execute(insertquery, (nametrip, creatorname, items))
+def inserttrip(nametrip, creatorname):
+    insertquery = "INSERT INTO Trips (name, creator, numitems) VALUES (%s , %s, 0)"
+    cursor.execute(insertquery, (nametrip, creatorname))
     conn.commit()
+
+def modifynumitems(nametrip):
+    modifyquery = "UPDATE Trips SET numitems = "
 
 def deletetrip(tripname):
     deletequery = "DELETE FROM Trips WHERE name = %s" 
@@ -31,6 +35,24 @@ def getalltrips():
     alltrips = cursor.fetchall()
     return alltrips
 
+def inserttripitem(tripname, placename, address, lng, lat):
+    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude) VALUES (%s , %s, %s, %s, %s)"
+    cursor.execute(insertquery, (tripname, placename, address, lat, lng))
+    conn.commit()
+
+def deletetripitem(address):
+    deletequery = "DELETE FROM TripItems WHERE address = %s" 
+    cursor.execute(deletequery, address)
+    conn.commit()
+
+def getalltripitems():
+    turntolist = []
+    allquery = "SELECT * FROM TripItems"
+    cursor.execute(allquery)
+    alltrips = cursor.fetchall()
+    for trips in alltrips:
+        turntolist.append(list(trips))
+    return turntolist
 
 
 

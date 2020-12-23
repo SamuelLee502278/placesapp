@@ -7,6 +7,7 @@
 {% block content %}
 
 <h1>{{trip}}</h1>
+<h2 id="test"></h2>
 
 {% if search_result == None %}
 <div class="sidenav" id = "sidenav" style ="width: 0px">
@@ -30,14 +31,12 @@
 </form>
 </div>
 
-<h1 id="test"></h1>
-
 {% for candidates in tripitems %}
     <div class = "initialdisplay">
         <div class = "card">
             <div class="card-body">
-                <h5 class="card-title">{{candidates.name}}</h5>
-                <h6 class="card-title">{{candidates.address}}</h6>
+                <h5 class="card-title">{{candidates[1]}}</h5>
+                <h6 class="card-title">{{candidates[2]}}</h6>
                 <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
             </div>
         </div>
@@ -73,7 +72,7 @@ function hideSide(){
 
 function addTripItem(item){
 
-    var item = {"name": item.name, "address": item.address, "lat": item.lat, "lng": item.lng}
+    var item = {"tripname":{{trip|tojson}}, "name": item.name, "address": item.address, "lat": item.lat, "lng": item.lng}
 
     $.ajax({
         type: "POST",
@@ -90,7 +89,7 @@ function addTripItem(item){
 
 function deleteTripItem(item){
 
-    var item = {"address": item.address}
+    var item = {"address": item[2]}
 
     $.ajax({
         type: "POST",
