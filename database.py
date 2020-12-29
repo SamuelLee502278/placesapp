@@ -45,14 +45,24 @@ def deletetripitem(address):
     cursor.execute(deletequery, address)
     conn.commit()
 
-def getalltripitems():
+def getalltripitems(tripname):
     turntolist = []
-    allquery = "SELECT * FROM TripItems"
-    cursor.execute(allquery)
+    allquery = "SELECT * FROM TripItems WHERE tripname = %s"
+    cursor.execute(allquery, tripname)
     alltrips = cursor.fetchall()
     for trips in alltrips:
         turntolist.append(list(trips))
     return turntolist
+
+def getindividualtrip(address):
+    getquery = "SELECT * FROM TripItems WHERE address = %s LIMIT 1"
+    cursor.execute(getquery, address)
+    gettrip = cursor.fetchall()
+    return gettrip
+
+
+# def getcoordinates(name):
+#     getcordquery = "SELECT 
 
 
 

@@ -1,3 +1,4 @@
-test = ("Sam", "John", "kevin")
-test = list(test)
-print(test)
+string = "-32.55567723321"
+convert = float(string)
+convert = convert + -23.4
+print(convert)

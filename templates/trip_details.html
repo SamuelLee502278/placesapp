@@ -7,7 +7,6 @@
 {% block content %}
 
 <h1>{{trip}}</h1>
-<h2 id="test"></h2>
 
 {% if search_result == None %}
 <div class="sidenav" id = "sidenav" style ="width: 0px">
@@ -37,6 +36,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{candidates[1]}}</h5>
                 <h6 class="card-title">{{candidates[2]}}</h6>
+                <a href="/{{candidates[2]}}/placedetail" class="btn btn-primary">See More</a>
                 <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
             </div>
         </div>

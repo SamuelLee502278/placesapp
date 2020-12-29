@@ -4,6 +4,8 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="/static/home.css">
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -12,6 +14,13 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        body{
+            background-color: #007bff;
+        }
+    </style>
+
     {% block header %}
     {% endblock %}
 </header>
@@ -44,19 +53,21 @@
 
 
 <div class="container">
-    {% for trip in trips %}
     <div class="row">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-            <h5 class="card-title">{{trip[0]}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{trip[1]}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">Number of Places: {{trip[2]}}</h6>
-            <a href="/{{trip[0]}}/tripdetails" class="card-link">Enter</a>
-            <a href="/{{trip[0]}}/deletetrip" class ="card-link">Delete</a>
+    {% for trip in trips %}
+        <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" id = "cardrow">
+            <div class="card" id = "card" style="width: 100%; height: 100%;">
+                <div class="card-body">
+                    <h5 class="card-title">{{trip[0]}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{trip[1]}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Number of Places: {{trip[2]}}</h6>
+                    <a href="/{{trip[0]}}/tripdetails" class="card-link">Enter</a>
+                    <a href="/{{trip[0]}}/deletetrip" class ="card-link">Delete</a>
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

@@ -35,7 +35,6 @@ class DataClass:
                 "address" : content['formatted_address'],
                 "lat" : content['geometry']['location']['lat'],
                 "lng" : content['geometry']['location']['lng'],
-                # "photo": content['photo']
             }
             results.append(place)
         return results
