@@ -17,9 +17,15 @@ cursor = conn.cursor()
 # cursor.execute(createtable)
 
 def inserttrip(nametrip, creatorname):
+    if nametrip == "":
+        return "noname"
     insertquery = "INSERT INTO Trips (name, creator, numitems) VALUES (%s , %s, 0)"
-    cursor.execute(insertquery, (nametrip, creatorname))
-    conn.commit()
+    try:
+        cursor.execute(insertquery, (nametrip, creatorname))
+        conn.commit()
+        return "success"
+    except pymysql.Error:
+        return "duplicate"
 
 def modifynumitems(nametrip):
     modifyquery = "UPDATE Trips SET numitems = "
@@ -37,8 +43,12 @@ def getalltrips():
 
 def inserttripitem(tripname, placename, address, lng, lat):
     insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude) VALUES (%s , %s, %s, %s, %s)"
-    cursor.execute(insertquery, (tripname, placename, address, lat, lng))
-    conn.commit()
+    try:
+        cursor.execute(insertquery, (tripname, placename, address, lat, lng))
+        conn.commit()
+        return "success"
+    except pymysql.Error:
+        return "error"
 
 def deletetripitem(address):
     deletequery = "DELETE FROM TripItems WHERE address = %s" 

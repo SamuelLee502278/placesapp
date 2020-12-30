@@ -1,12 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 import data
-import config as creds
 import database
+import utility
+import config as creds
 
 app = Flask(__name__)
 
 dataclass = data.DataClass()
+utility = utility.UtilityClass()
 
 @app.route('/')
 def home():
@@ -14,13 +16,14 @@ def home():
 
 @app.route('/addtrip', methods = ['POST', 'GET'])
 def addtrip():
-    name = request.form.get("tripname")
-    name = name.split()
-    name = [x.capitalize() for x in name]
-    name = " ".join(name)
-    creator = 'Bob'
-    database.inserttrip(name, creator)
-    return redirect(url_for('home'))
+    newtrip = json.loads(request.form['output'])
+    returnstring = database.inserttrip(utility.capitalizeinput(newtrip['tripname']), utility.capitalizeinput(newtrip['creator']))
+    if returnstring == "success":
+        return "success"
+    elif returnstring == "duplicate":
+        return "duplicate"
+    elif returnstring == "noname":
+        return "noname"
 
 @app.route('/<string:name>/deletetrip')
 def deletetrip(name):
@@ -42,8 +45,11 @@ def tripdetails(name):
 @app.route('/addtripitem', methods = ['POST', 'GET'])
 def addtripitem():
     new_item = json.loads(request.form['output'])
-    database.inserttripitem(new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng'])
-    return "success"
+    returnstring = database.inserttripitem(new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng'])
+    if returnstring == "success":
+        return "success"
+    else:
+        return "error"
 
 @app.route('/deletetripitem', methods = ['POST', 'GET'])
 def deletetripitem():
@@ -56,7 +62,6 @@ def deletetripitem():
 def placedetail(address):
     getplace = database.getindividualtrip(address)
     return render_template("place_detail.html", creds = creds.secret, place = getplace[0])
-
 
 if __name__=="__main__":
     app.run(debug=True)

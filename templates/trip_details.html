@@ -18,6 +18,7 @@
       <h5 class="card-title">{{candidates.name}}</h5>
       <h6 class="card-title">{{candidates.address}}</h6>
       <button onclick = "addTripItem({{candidates|safe}})" type ="button" class="btn btn-success">Add to List</button>
+      <h6 id = "errormessage"></h6>
     </div>
 </div>
 {% endfor %}
@@ -81,7 +82,13 @@ function addTripItem(item){
 
     success: function(response){
 
-    location.href = "/{{trip}}/tripdetails"
+    if(response == "success"){
+        location.href = "/{{trip}}/tripdetails"
+    }
+    else{
+        document.getElementById("errormessage").innerHTML = "Cannot add item to list. Duplicate item.";
+        document.getElementById("errormessage").style.color = "red";
+    }
 }        
 });
 
