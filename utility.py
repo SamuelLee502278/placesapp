@@ -5,3 +5,10 @@ class UtilityClass:
         input = [x.capitalize() for x in input]
         input = " ".join(input)  
         return input
+
+    def addelementstring(self, original, elementtoadd):
+        original = original.split()
+        original.append(elementtoadd)
+        newstring = ''.join(original)
+        return newstring
+    

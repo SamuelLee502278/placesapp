@@ -13,7 +13,7 @@ cursor = conn.cursor()
 
 #Created Trips Table
 # createtable = "CREATE TABLE Trips(name varchar(200) PRIMARY KEY, creator varchar(200), numitems INT)"
-# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200) PRIMARY KEY, lattitude varchar(200), longitude varchar(200))"
+# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200) PRIMARY KEY, lattitude varchar(200), longitude varchar(200), rating varchar(10), price varchar(10), phone varchar(20), website varchar(200))"
 # cursor.execute(createtable)
 
 def inserttrip(nametrip, creatorname):
@@ -41,10 +41,10 @@ def getalltrips():
     alltrips = cursor.fetchall()
     return alltrips
 
-def inserttripitem(tripname, placename, address, lng, lat):
-    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude) VALUES (%s , %s, %s, %s, %s)"
+def inserttripitem(tripname, placename, address, lat, lng, rating, price, phone, website):
+    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude, rating, price, phone, website) VALUES (%s , %s, %s, %s, %s, %s, %s, %s, %s)"
     try:
-        cursor.execute(insertquery, (tripname, placename, address, lat, lng))
+        cursor.execute(insertquery, (tripname, placename, address, lat, lng, rating, price, phone, website))
         conn.commit()
         return "success"
     except pymysql.Error:
