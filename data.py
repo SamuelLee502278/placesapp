@@ -20,7 +20,6 @@ class DataClass:
         content = r.json()["results"]
         for item in content:
             textsearch_array.append(item['place_id'])
-            print(item['place_id'])
         return textsearch_array 
 
     def findplace(self, usersearch):
@@ -43,12 +42,12 @@ class DataClass:
             results.append(place)
         return results
 
-    def getyelpinfo(self, lat, lng, placename):
+    def getyelpinfo(self, new_item):
         endpoint = "https://api.yelp.com/v3/businesses/search"
         headers = {'Authorization':'bearer %s' % creds.yelpkey}
         parameters =  {
-        'latitude' : float(lat),
-        'longitude' :  float(lng),
+        'latitude' : float(new_item['lat']),
+        'longitude' :  float(new_item['lng']),
         'limit':5,
         'radius':100,
             }
@@ -60,10 +59,29 @@ class DataClass:
             word = utility.addelementstring(item['name'], str(count))
             count = count + 1
             newlist.append(word)
-        result = difflib.get_close_matches(placename, newlist, cutoff = 0.2)
-        index = int(result[0][len(result[0])-1])
-        return content[index]
+        result = difflib.get_close_matches(new_item['name'], newlist, cutoff = 0.2)
+        placeinfo = self.parse_yelpinfo(result, content)
+        return placeinfo
 
+    def parse_yelpinfo(self, result, content):
+        dict_title = ['rating', 'price', 'display_phone', 'url']
+        result_set = []
+        if len(result) == 0:
+            result_set = ['None', 'None', 'None', 'None']
+        else:
+            index = int(result[0][len(result[0])-1])
+            for i in range(len(dict_title)):
+                if dict_title[i] in content[index]:
+                    result_set.append(content[index][dict_title[i]])
+                else:
+                    result_set.append('None')
+        placeinfo = {
+            'rating': result_set[0],
+            'price': result_set[1],
+            'phone': result_set[2],
+            'website': result_set[3]
+        }
+        return placeinfo
 
     def storesearch(self, store):
         self.searchstore = store

@@ -41,10 +41,10 @@ def getalltrips():
     alltrips = cursor.fetchall()
     return alltrips
 
-def inserttripitem(tripname, placename, address, lat, lng, rating, price, phone, website):
-    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude, rating, price, phone, website) VALUES (%s , %s, %s, %s, %s, %s, %s, %s, %s)"
+def inserttripitem(new_item, yelpinfo):
+    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude, rating, price, phone, website) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
     try:
-        cursor.execute(insertquery, (tripname, placename, address, lat, lng, rating, price, phone, website))
+        cursor.execute(insertquery, (new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng'], yelpinfo['rating'], yelpinfo['price'], yelpinfo['phone'], yelpinfo['website']))
         conn.commit()
         return "success"
     except pymysql.Error:
@@ -69,10 +69,3 @@ def getindividualtrip(address):
     cursor.execute(getquery, address)
     gettrip = cursor.fetchall()
     return gettrip
-
-
-# def getcoordinates(name):
-#     getcordquery = "SELECT 
-
-
-
