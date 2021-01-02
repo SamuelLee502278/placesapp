@@ -96,7 +96,7 @@ function addTripItem(item){
 
 function deleteTripItem(item){
 
-    var item = {"address": item[2]}
+    var item = {"tripname": item[0], "address": item[2]}
 
     $.ajax({
         type: "POST",

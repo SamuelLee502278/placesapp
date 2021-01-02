@@ -13,7 +13,7 @@ cursor = conn.cursor()
 
 #Created Trips Table
 # createtable = "CREATE TABLE Trips(name varchar(200) PRIMARY KEY, creator varchar(200), numitems INT)"
-# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200) PRIMARY KEY, lattitude varchar(200), longitude varchar(200), rating varchar(10), price varchar(10), phone varchar(20), website varchar(200))"
+# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200), lattitude varchar(200), longitude varchar(200), rating varchar(10), price varchar(10), phone varchar(20), website varchar(200), CONSTRAINT trip_entry PRIMARY KEY (tripname,address))"
 # cursor.execute(createtable)
 
 def inserttrip(nametrip, creatorname):
@@ -27,9 +27,24 @@ def inserttrip(nametrip, creatorname):
     except pymysql.Error:
         return "duplicate"
 
-def modifynumitems(nametrip):
-    modifyquery = "UPDATE Trips SET numitems = "
+def addnumitems(nametrip):
+    getnumitemsquery = "SELECT numitems FROM Trips WHERE name = %s"
+    cursor.execute(getnumitemsquery, nametrip)
+    numitems = cursor.fetchone()
+    addone = numitems[0] + 1
+    addnumitemsquery = "UPDATE Trips SET numitems = %s WHERE name = %s"
+    cursor.execute(addnumitemsquery, (addone, nametrip))
+    conn.commit()
 
+def deletenumitems(nametrip):
+    getnumitemsquery = "SELECT numitems FROM Trips WHERE name = %s"
+    cursor.execute(getnumitemsquery, nametrip)
+    numitems = cursor.fetchone()
+    addone = numitems[0] + -1
+    addnumitemsquery = "UPDATE Trips SET numitems = %s WHERE name = %s"
+    cursor.execute(addnumitemsquery, (addone, nametrip))
+    conn.commit()
+    
 def deletetrip(tripname):
     deletequery = "DELETE FROM Trips WHERE name = %s" 
     cursor.execute(deletequery, (tripname))

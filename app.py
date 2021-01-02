@@ -48,6 +48,7 @@ def addtripitem():
     yelpinfo = dataclass.getyelpinfo(new_item)
     returnstring = database.inserttripitem(new_item, yelpinfo)
     if returnstring == "success":
+        database.addnumitems(new_item['tripname'])
         return "success"
     else:
         return "error"
@@ -56,6 +57,7 @@ def addtripitem():
 def deletetripitem():
     delete_item = json.loads(request.form['output'])
     database.deletetripitem(delete_item['address'])
+    database.deletenumitems(delete_item['tripname'])
     return "success"
 
 @app.route('/<string:address>/placedetail')
