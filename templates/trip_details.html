@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<h1>{{trip}}</h1>
+<h1 style = "color: white; margin-left: 15px;">{{trip}}</h1>
 
 {% if search_result == None %}
 <div class="sidenav" id = "sidenav" style ="width: 0px">
@@ -25,27 +25,31 @@
 {% endif %}
 </div>
 
-<div id = "listbody">
+<div class ="container" id = "inputbody">
 <form action='/{{trip}}/tripdetails' method = "POST">
 <input type="text" class="form-control" id = "myInput" placeholder="Search for a Place" name="place" style ="border-top-left-radius: 100px; border-bottom-left-radius: 100px"/>
 </form>
 </div>
 
-{% for candidates in tripitems %}
-    <div class = "initialdisplay">
-        <div class = "card">
-            <div class="card-body">
-                <h5 class="card-title">{{candidates[1]}}</h5>
-                <h6 class="card-title">{{candidates[2]}}</h6>
-                <a href="{{ url_for('placedetail' , address=candidates[2]) }}" class="btn btn-primary">See More</a>
-                <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
+<div id = "contentbody">
+    <div class="container"> 
+        <div class="row">
+        {% for candidates in tripitems %}
+            <div class="col-12 col-sm-6 col-md-3 col-lg-3 col-xl-3" id = "cardrow">
+                <div class = "card" id = "card" style="width: 100%; height: 100%;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{candidates[1]}}</h5>
+                        <h6 class="card-title">{{candidates[2]}}</h6>
+                        <a href="{{ url_for('placedetail' , address=candidates[2]) }}" class="btn btn-primary">See More</a>
+                        <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
+                    </div>
+                </div>
             </div>
+        {% endfor %}
         </div>
     </div>
-{% endfor %}
-
-<div class = "additemdisplay">
 </div>
+
 
 {% if search_result == None %}
 <button onclick = "hideSide()" type="button" class="btn btn-info" id = "hidebutton">
@@ -61,12 +65,14 @@ function hideSide(){
     var hide = document.getElementById("sidenav")
     if(hide.style.width != "0px"){
         hide.style.width = "0px";
-        document.getElementById('listbody').style.opacity = 1;
+        document.getElementById('inputbody').style.opacity = 1;
+        document.getElementById('contentbody').style.opacity = 1;
         document.getElementById('hidebutton').style.right = "0px";
     }
     else{
         hide.style.width = "400px";
-        document.getElementById('listbody').style.opacity = 0.2;
+        document.getElementById('inputbody').style.opacity = 0.2;
+        document.getElementById('contentbody').style.opacity = 0.2;
         document.getElementById('hidebutton').style.right = "400px";
     }
 }

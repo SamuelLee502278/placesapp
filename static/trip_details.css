@@ -5,7 +5,11 @@ width: 80%;
 margin-top: 20px;
 z-index: 2;
 border-color: orange;
-box-shadow: 0 0 0
+box-shadow: 0 0 0;
+border-top-left-radius: 100px; 
+border-bottom-left-radius: 100px;
+border-top-right-radius: 100px;
+border-bottom-right-radius: 100px;
 }
 
 #hidebutton{
@@ -31,6 +35,14 @@ box-shadow: 0 0 0
     padding-top: 50px;
     border-style: solid;
     transition: all 0.1s ease-out;
+}
+
+#card{
+    box-shadow: 15px 15px rgba(0,0,0,0.16);
+}
+
+#cardrow{
+    margin-top: 20px;
 }
 
 
