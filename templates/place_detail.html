@@ -13,24 +13,55 @@
             <h3>Address</h3>
             <h4>{{place[2]}}</h4>
             <h3>Phone Number</h3>
-            <h4>{{place[7]}}</h4>
-            <h3>Price</h3>
-            <h4>{{place[6]}}</h4>
-            <h3>Rating</h3>
             <h4>{{place[5]}}</h4>
-            <h4><a href="{{place[8]}}">See More</a></h4>
+            <h3>Price</h3>
+            <h4>{{place[4]}}</h4>
+            <h3>Rating</h3>
+            <h4>{{place[3]}}</h4>
+            <h4><a href="{{place[6]}}">See More</a></h4>
         </div>
 
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8"> 
             <iframe
             width= "100%"
-            height="450"
+            height="100%"
             frameborder="0" style="border:0"
             src="https://www.google.com/maps/embed/v1/place?key={{creds}}
-            &q={{place[3]}},{{place[4]}}" allowfullscreen>
+            &q={{place[0]}},{{place[1]}}" allowfullscreen>
           </iframe>
         </div>
+    </div>
 
+    <br>
+
+    <div class ="row">
+
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <h3>Hours of Operation</h3>
+            {% for items in hours %}     
+            <h4>{{items.day}} {{items.start}} - {{items.end}}</h4>
+            {% endfor %}
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8" style="text-align: center;"> 
+            <div class ="row">
+                {% if place[7] != 'None' %}
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style = "margin-top:15px;">  
+                    <img src={{place[7]}} class="rounded mx-auto d-block" style = "height: 200px; width: 100%; object-fit:cover">
+                </div>
+                {% endif %}
+                {% if place[8] != 'None' %}
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style = "margin-top:15px; ">  
+                    <img src={{place[8]}} class="rounded mx-auto d-block" style = "height: 200px; width: 100%; object-fit:cover">
+                </div>
+                {% endif %}
+                {% if place[9] != 'None' %}
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6" style = "margin-top:15px">  
+                    <img src={{place[9]}} class="rounded mx-auto d-block" style = "height: 200px; width: 100%; object-fit:cover">
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 

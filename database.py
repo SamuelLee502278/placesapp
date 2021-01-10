@@ -1,4 +1,5 @@
 import pymysql
+import json
 import config as creds
 
 conn = pymysql.connect(
@@ -13,7 +14,8 @@ cursor = conn.cursor()
 
 #Created Trips Table
 # createtable = "CREATE TABLE Trips(name varchar(200) PRIMARY KEY, creator varchar(200), numitems INT)"
-# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200), lattitude varchar(200), longitude varchar(200), rating varchar(10), price varchar(10), phone varchar(20), website varchar(200), CONSTRAINT trip_entry PRIMARY KEY (tripname,address))"
+# createtable = "CREATE TABLE TripItems(tripname varchar(200), placename varchar(200), address varchar(200), lattitude varchar(200), longitude varchar(200), CONSTRAINT trip_entry PRIMARY KEY (tripname,address))"
+# createtable = "CREATE TABLE PlaceDetails(address varchar(200) PRIMARY KEY, id varchar(200), rating varchar(10), price varchar(10), phone varchar(20), website varchar(200), photo1 varchar(200), photo2 varchar(200), photo3 varchar(200), hours varchar(2000))"
 # cursor.execute(createtable)
 
 def inserttrip(nametrip, creatorname):
@@ -57,9 +59,12 @@ def getalltrips():
     return alltrips
 
 def inserttripitem(new_item, yelpinfo):
-    insertquery = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude, rating, price, phone, website) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    insertplace = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude) VALUES (%s, %s, %s, %s, %s)"
+    insertdetails = "INSERT INTO PlaceDetails (address, id, rating, price, phone, website, photo1, photo2, photo3, hours) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     try:
-        cursor.execute(insertquery, (new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng'], yelpinfo['rating'], yelpinfo['price'], yelpinfo['phone'], yelpinfo['website']))
+        cursor.execute(insertplace, (new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng']))
+        conn.commit()
+        cursor.execute(insertdetails, (new_item['address'], yelpinfo['id'], yelpinfo['rating'], yelpinfo['price'], yelpinfo['phone'], yelpinfo['website'], yelpinfo['photo1'], yelpinfo['photo2'], yelpinfo['photo3'], json.dumps(yelpinfo['hours'])))
         conn.commit()
         return "success"
     except pymysql.Error:
@@ -80,7 +85,7 @@ def getalltripitems(tripname):
     return turntolist
 
 def getindividualtrip(address):
-    getquery = "SELECT * FROM TripItems WHERE address = %s LIMIT 1"
+    getquery = "SELECT TripItems.lattitude, TripItems.longitude, PlaceDetails.address, PlaceDetails.rating, PlaceDetails.price, PlaceDetails.phone, PlaceDetails.website, PlaceDetails.photo1, PlaceDetails.photo2, PlaceDetails.photo3, PlaceDetails.hours FROM TripItems INNER JOIN PlaceDetails ON TripItems.address = PlaceDetails.address WHERE TripItems.address = %s"
     cursor.execute(getquery, address)
     gettrip = cursor.fetchall()
     return gettrip

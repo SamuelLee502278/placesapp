@@ -42,7 +42,7 @@ class DataClass:
             results.append(place)
         return results
 
-    def getyelpinfo(self, new_item):
+    def get_businessearch(self, new_item):
         endpoint = "https://api.yelp.com/v3/businesses/search"
         headers = {'Authorization':'bearer %s' % creds.yelpkey}
         parameters =  {
@@ -63,24 +63,48 @@ class DataClass:
         placeinfo = self.parse_yelpinfo(result, content)
         return placeinfo
 
-    def parse_yelpinfo(self, result, content):
-        dict_title = ['rating', 'price', 'display_phone', 'url']
+    def get_businessdetails(self, id):
+        dict_title = ['photos','hours']
         result_set = []
+        endpoint = "https://api.yelp.com/v3/businesses/" + id
+        headers = {'Authorization':'bearer %s' % creds.yelpkey}
+        output = requests.get(url = endpoint, headers = headers)
+        content = output.json()
+        for i in range(len(dict_title)):
+            if dict_title[i] in content:
+                result_set.append(content[dict_title[i]])
+            else:
+                result_set.append('None')
+        return result_set
+        
+    def parse_yelpinfo(self, result, content):
+        dict_title = ['id','rating', 'price', 'display_phone', 'url']
+        result_set_search = []
         if len(result) == 0:
             result_set = ['None', 'None', 'None', 'None']
         else:
             index = int(result[0][len(result[0])-1])
             for i in range(len(dict_title)):
                 if dict_title[i] in content[index]:
-                    result_set.append(content[index][dict_title[i]])
+                    result_set_search.append(content[index][dict_title[i]])
                 else:
-                    result_set.append('None')
+                    result_set_search.append('None')
+        if result_set_search[0] != 'None':
+            result_set_details = self.get_businessdetails(result_set_search[0])
+        for i in range(3-len(result_set_details[0])):
+            result_set_details[0].append('None')
         placeinfo = {
-            'rating': result_set[0],
-            'price': result_set[1],
-            'phone': result_set[2],
-            'website': result_set[3]
+            'id': result_set_search[0],
+            'rating': result_set_search[1],
+            'price': result_set_search[2],
+            'phone': result_set_search[3],
+            'website': result_set_search[4],
+            'photo1': result_set_details[0][0],
+            'photo2': result_set_details[0][1],
+            'photo3': result_set_details[0][2],
+            'hours': result_set_details[1]
         }
+        print(placeinfo)
         return placeinfo
 
     def storesearch(self, store):

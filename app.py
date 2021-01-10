@@ -45,7 +45,7 @@ def tripdetails(name):
 @app.route('/addtripitem', methods = ['POST', 'GET'])
 def addtripitem():
     new_item = json.loads(request.form['output'])
-    yelpinfo = dataclass.getyelpinfo(new_item)
+    yelpinfo = dataclass.get_businessearch(new_item)
     returnstring = database.inserttripitem(new_item, yelpinfo)
     if returnstring == "success":
         database.addnumitems(new_item['tripname'])
@@ -63,7 +63,8 @@ def deletetripitem():
 @app.route('/<string:address>/placedetail')
 def placedetail(address):
     getplace = database.getindividualtrip(address)
-    return render_template("place_detail.html", creds = creds.secret, place = getplace[0])
+    hours_operation = utility.operation_hours(json.loads(getplace[0][10])[0])
+    return render_template("place_detail.html", creds = creds.secret, place = getplace[0], hours = hours_operation)
 
 if __name__=="__main__":
     app.run(debug=True)
