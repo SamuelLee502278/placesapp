@@ -1,3 +1,15 @@
+body{
+    background-color: #007bff;
+}
+
+.container{
+    margin-top: 50px;
+}
+
+#navbar_title{
+    color: white;
+}
+
 #card{
     box-shadow: 15px 15px rgba(0,0,0,0.16);
 }
@@ -39,10 +51,9 @@
     transform: translate(-50%, -50%);
 }
 
-.container{
-    margin-top: 50px;
+#navbar{
+    background-color: #343a40;
 }
-
 
 
 

@@ -17,31 +17,26 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <style>
-        body{
-            background-color: #007bff;
-        }
-    </style>
-
     {% block header %}
     {% endblock %}
 </header>
 <body>
 
-    <div class="pos-f-t">
-        <nav class="navbar navbar-dark bg-dark">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-        </nav>
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="bg-dark p-4">
-                <a class="nav-link" href="/">Home</a>
-            </div>
+{% block content %}
+
+<div class="pos-f-t">
+    <nav class="navbar navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        <span><img src="/static/car.png" style="width: 150px;"></span>
+      </button>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-2">
+            <a class="nav-link" id = "navbar_title" href="/">Home</a>
         </div>
     </div>
-
-{% block content %}
+</div>
 
 <button onclick = "addtrip()" type = "button" class="btn btn-success" id = "addtripbutton">Add Trip</button>
 

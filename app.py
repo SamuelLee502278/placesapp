@@ -60,15 +60,15 @@ def deletetripitem():
     database.deletenumitems(delete_item['tripname'])
     return "success"
 
-@app.route('/<string:address>/placedetail')
-def placedetail(address):
+@app.route('/<string:tripname>/<string:address>/placedetail')
+def placedetail(address, tripname):
     getplace = database.getindividualtrip(address)
     hours = json.loads(getplace[0][10])[0]
     if hours != 'N':
         hours_operation = utility.operation_hours(hours)
     else:
         hours_operation = 'None'
-    return render_template("place_detail.html", creds = creds.secret, place = getplace[0], hours = hours_operation)
+    return render_template("place_detail.html", creds = creds.secret, place = getplace[0], hours = hours_operation, tripname = tripname)
 
 if __name__=="__main__":
     app.run(debug=True)

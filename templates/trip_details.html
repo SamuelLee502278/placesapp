@@ -6,6 +6,19 @@
 
 {% block content %}
 
+<div class="pos-f-t">
+    <nav class="navbar navbar-dark bg-dark">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </nav>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-2">
+            <a class="nav-link" id = "navbar_title" href="/">Home</a>
+        </div>
+    </div>
+</div>
+
 <h1 style = "color: white; margin-left: 15px;">{{trip}}</h1>
 
 {% if search_result == None %}
@@ -42,7 +55,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{candidates[1]}}</h5>
                         <h6 class="card-title">{{candidates[2]}}</h6>
-                        <a href="{{ url_for('placedetail' , address=candidates[2]) }}" class="btn btn-primary">See More</a>
+                        <a href="{{ url_for('placedetail' , address=candidates[2], tripname = candidates[0]) }}" class="btn btn-primary">See More</a>
                         <button onclick = "deleteTripItem({{candidates|safe}})" type = "button" class="btn btn-warning">Delete</button>
                     </div>
                 </div>
