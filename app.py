@@ -3,7 +3,7 @@ import json
 import data
 import database
 import utility
-import config as creds
+from decouple import config 
 
 app = Flask(__name__)
 
@@ -68,7 +68,7 @@ def placedetail(address, tripname):
         hours_operation = utility.operation_hours(hours)
     else:
         hours_operation = 'None'
-    return render_template("place_detail.html", creds = creds.secret, place = getplace[0], hours = hours_operation, tripname = tripname)
+    return render_template("place_detail.html", creds = config('GOOGLE_API'), place = getplace[0], hours = hours_operation, tripname = tripname)
 
 if __name__=="__main__":
     app.run(debug=True)

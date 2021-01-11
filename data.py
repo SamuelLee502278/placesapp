@@ -1,7 +1,7 @@
 import requests
-import config as creds
 import difflib
 import utility 
+from decouple import config 
 
 utility = utility.UtilityClass()
 
@@ -12,7 +12,7 @@ class DataClass:
 
     def textsearch(self, usersearch):
         textsearch_array = []
-        url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ usersearch + "&key=" + creds.secret
+        url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ usersearch + "&key=" + config('GOOGLE_API')
         r = requests.get(url)
         if r.status_code != requests.codes.ok:
             print(f"Error code {r.status_code} fetching data from Google Places TextSearch API")
@@ -27,7 +27,7 @@ class DataClass:
         usersearch = "+".join(usersearch.split(" "))
         textsearch_array = self.textsearch(usersearch) 
         for candidates in textsearch_array:
-            url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + candidates + "&fields=formatted_address,name,geometry,photo,formatted_phone_number&key=" + creds.secret
+            url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" + candidates + "&fields=formatted_address,name,geometry,photo,formatted_phone_number&key=" + config('GOOGLE_API')
             r = requests.get(url)
             if r.status_code != requests.codes.ok:
                 print(f"Error code {r.status_code} fetching data from Google Places Detail API")
@@ -44,7 +44,7 @@ class DataClass:
 
     def get_businessearch(self, new_item):
         endpoint = "https://api.yelp.com/v3/businesses/search"
-        headers = {'Authorization':'bearer %s' % creds.yelpkey}
+        headers = {'Authorization':'bearer %s' % config('YELP_KEY')}
         parameters =  {
         'latitude' : float(new_item['lat']),
         'longitude' :  float(new_item['lng']),
@@ -67,7 +67,7 @@ class DataClass:
         dict_title = ['photos','hours']
         result_set = []
         endpoint = "https://api.yelp.com/v3/businesses/" + id
-        headers = {'Authorization':'bearer %s' % creds.yelpkey}
+        headers = {'Authorization':'bearer %s' % config('YELP_KEY')}
         output = requests.get(url = endpoint, headers = headers)
         content = output.json()
         for i in range(len(dict_title)):

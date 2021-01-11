@@ -1,12 +1,12 @@
 import pymysql
 import json
-import config as creds
+from decouple import config 
 
 conn = pymysql.connect(
-    host = creds.host,
-    port = creds.port,
-    user = creds.user,
-    password = creds.password,
+    host = config('HOST'),
+    port = 3306,
+    user = "admin",
+    password = config('DB_PASS'),
     db = "placesapp"
 )
 
