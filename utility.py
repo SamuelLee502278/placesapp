@@ -57,5 +57,4 @@ class UtilityClass:
                "day" : day_convert
             }
             listofhours.append(time)
-        print(listofhours)
         return listofhours

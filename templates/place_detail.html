@@ -18,7 +18,9 @@
             <h4>{{place[4]}}</h4>
             <h3>Rating</h3>
             <h4>{{place[3]}}</h4>
+            {% if place[6] != 'None' %}
             <h4><a href="{{place[6]}}">See More</a></h4>
+            {% endif %}
         </div>
 
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8"> 
@@ -38,9 +40,13 @@
 
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Hours of Operation</h3>
+            {% if hours == 'None' %}
+            <h4>None</h4>
+            {% else %}
             {% for items in hours %}     
             <h4>{{items.day}} {{items.start}} - {{items.end}}</h4>
             {% endfor %}
+            {% endif %}
         </div>
 
         <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8" style="text-align: center;"> 

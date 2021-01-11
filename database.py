@@ -62,17 +62,20 @@ def inserttripitem(new_item, yelpinfo):
     insertplace = "INSERT INTO TripItems (tripname, placename, address, lattitude, longitude) VALUES (%s, %s, %s, %s, %s)"
     insertdetails = "INSERT INTO PlaceDetails (address, id, rating, price, phone, website, photo1, photo2, photo3, hours) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     try:
-        cursor.execute(insertplace, (new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng']))
-        conn.commit()
         cursor.execute(insertdetails, (new_item['address'], yelpinfo['id'], yelpinfo['rating'], yelpinfo['price'], yelpinfo['phone'], yelpinfo['website'], yelpinfo['photo1'], yelpinfo['photo2'], yelpinfo['photo3'], json.dumps(yelpinfo['hours'])))
+        conn.commit()
+    except pymysql.Error:
+        pass
+    try:
+        cursor.execute(insertplace, (new_item['tripname'], new_item['name'], new_item['address'], new_item['lat'], new_item['lng']))
         conn.commit()
         return "success"
     except pymysql.Error:
         return "error"
 
-def deletetripitem(address):
-    deletequery = "DELETE FROM TripItems WHERE address = %s" 
-    cursor.execute(deletequery, address)
+def deletetripitem(address,tripname):
+    deletequery = "DELETE FROM TripItems WHERE address = %s AND tripname = %s" 
+    cursor.execute(deletequery, (address,tripname))
     conn.commit()
 
 def getalltripitems(tripname):

@@ -56,14 +56,18 @@ def addtripitem():
 @app.route('/deletetripitem', methods = ['POST', 'GET'])
 def deletetripitem():
     delete_item = json.loads(request.form['output'])
-    database.deletetripitem(delete_item['address'])
+    database.deletetripitem(delete_item['address'], delete_item['tripname'])
     database.deletenumitems(delete_item['tripname'])
     return "success"
 
 @app.route('/<string:address>/placedetail')
 def placedetail(address):
     getplace = database.getindividualtrip(address)
-    hours_operation = utility.operation_hours(json.loads(getplace[0][10])[0])
+    hours = json.loads(getplace[0][10])[0]
+    if hours != 'N':
+        hours_operation = utility.operation_hours(hours)
+    else:
+        hours_operation = 'None'
     return render_template("place_detail.html", creds = creds.secret, place = getplace[0], hours = hours_operation)
 
 if __name__=="__main__":

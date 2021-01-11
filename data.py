@@ -81,7 +81,8 @@ class DataClass:
         dict_title = ['id','rating', 'price', 'display_phone', 'url']
         result_set_search = []
         if len(result) == 0:
-            result_set = ['None', 'None', 'None', 'None']
+            result_set_search = ['None', 'None', 'None', 'None', 'None']
+            result_set_details = [['None', 'None', 'None'], 'None']
         else:
             index = int(result[0][len(result[0])-1])
             for i in range(len(dict_title)):
@@ -91,8 +92,8 @@ class DataClass:
                     result_set_search.append('None')
         if result_set_search[0] != 'None':
             result_set_details = self.get_businessdetails(result_set_search[0])
-        for i in range(3-len(result_set_details[0])):
-            result_set_details[0].append('None')
+            for i in range(3-len(result_set_details[0])):
+                result_set_details[0].append('None')
         placeinfo = {
             'id': result_set_search[0],
             'rating': result_set_search[1],
