@@ -25,20 +25,18 @@
 <div class="sidenav" id = "sidenav" style ="width: 0px">
 {% else %}
 <div class="sidenav" id = "sidenav">
+<h6 id = "errormessage"></h6>
 {% for candidates in search_result %}
 <div class="card">
     <div class="card-body">
       <h5 class="card-title">{{candidates.name}}</h5>
       <h6 class="card-title">{{candidates.address}}</h6>
       <button onclick = "addTripItem({{candidates|safe}})" type ="button" class="btn btn-success">Add to List</button>
-      <h6 id = "errormessage"></h6>
     </div>
 </div>
 {% endfor %}
 {% endif %}
 </div>
-
-<!-- testing -->
 
 <div class ="container" id = "inputbody">
 <form action='/{{trip}}/tripdetails' method = "POST">
@@ -133,15 +131,22 @@ function deleteTripItem(item){
     
 }
 
-var searchfrom = document.getElementById("searchform")
+// var searchfrom = document.getElementById("searchform")
 
-searchfrom.addEventListener("keydown", function(e) {
+// searchfrom.addEventListener("keydown", function(e) {
 
-    if (e.keyCode == 13) { 
-        $("#searchform").submit()
-    }
+//     if (e.keyCode == 13) { 
+//         $("#searchform").submit()
+//     }
 
-})
+// })
+
+function convert(item){
+    var con = JSON.stringify(item)
+    con = JSON.parse(con)
+    console.log(con)
+    return con
+}
 
 </script>
 

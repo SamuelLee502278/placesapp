@@ -18,6 +18,7 @@ class DataClass:
             print(f"Error code {r.status_code} fetching data from Google Places TextSearch API")
             return None
         content = r.json()["results"]
+        print(content)
         for item in content:
             textsearch_array.append(item['place_id'])
         return textsearch_array 
@@ -33,6 +34,8 @@ class DataClass:
                 print(f"Error code {r.status_code} fetching data from Google Places Detail API")
                 return None
             content = r.json()['result']
+            content['name'] = content['name'].replace("'", "")
+            content['formatted_address'] = content['formatted_address'].replace("'", "")
             place = {
                 "name" : content['name'],
                 "address" : content['formatted_address'],
@@ -61,6 +64,7 @@ class DataClass:
             newlist.append(word)
         result = difflib.get_close_matches(new_item['name'], newlist, cutoff = 0.2)
         placeinfo = self.parse_yelpinfo(result, content)
+        print(placeinfo)
         return placeinfo
 
     def get_businessdetails(self, id):
@@ -78,6 +82,7 @@ class DataClass:
         return result_set
         
     def parse_yelpinfo(self, result, content):
+        print("hi")
         dict_title = ['id','rating', 'price', 'display_phone', 'url']
         result_set_search = []
         if len(result) == 0:

@@ -65,7 +65,10 @@ def deletetrip(tripname):
     conn = getconnection()
     cursor = conn.cursor()
     deletequery = "DELETE FROM Trips WHERE name = %s" 
+    deleteallitems = "DELETE FROM TripItems WHERE tripname = %s"
     cursor.execute(deletequery, (tripname))
+    conn.commit()
+    cursor.execute(deleteallitems, (tripname))
     conn.commit()
     cursor.close()
     conn.close()

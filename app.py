@@ -37,13 +37,14 @@ def tripdetails(name):
         result_array = dataclass.findplace(result_string)
         dataclass.storesearch(result_array)
         return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = database.getalltripitems(name), trip = name)
-    if dataclass.getsearch() != None:
-        return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = database.getalltripitems(name), trip = name)
-    else:
-        return render_template("trip_details.html", search_result = None, tripitems = database.getalltripitems(name), trip = name)
+    # if dataclass.getsearch() != None:
+    #     return render_template("trip_details.html", search_result = dataclass.getsearch(), tripitems = database.getalltripitems(name), trip = name)
+    # else:
+    return render_template("trip_details.html", search_result = None, tripitems = database.getalltripitems(name), trip = name)
 
 @app.route('/addtripitem', methods = ['POST', 'GET'])
 def addtripitem():
+    print("sucess")
     new_item = json.loads(request.form['output'])
     yelpinfo = dataclass.get_businessearch(new_item)
     returnstring = database.inserttripitem(new_item, yelpinfo)
